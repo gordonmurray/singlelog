@@ -1,12 +1,4 @@
 {
-    "variables": {
-        "base_ami_id": "ami-08c40ec9ead489470",
-        "region": "us-east-1",
-        "instance_type": "t3.xlarge",
-        "vpc_id": "vpc-035f00c3a6b353774",
-        "subnet_id": "subnet-04edf0972d10405ac",
-        "profile": "terraform-staging"
-    },
     "builders": [
         {
             "type": "amazon-ebs",
@@ -35,7 +27,7 @@
                 "sudo apt-cache policy apt-transport-https",
                 "sudo apt -y install apt-transport-https",
                 "echo \"deb [arch=amd64] https://release.memsql.com/production/debian memsql main\" | sudo tee /etc/apt/sources.list.d/memsql.list",
-                "sudo apt update && sudo apt -y install singlestoredb-toolbox singlestore-client singlestoredb-studio"
+                "sudo apt-get update && sudo apt-get -y install singlestoredb-toolbox singlestore-client singlestoredb-studio"
             ]
         },
         {

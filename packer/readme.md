@@ -1,4 +1,4 @@
 # Packer images
 
-> packer build -on-error=ask --var-file=variables.json nginx.json
+> packer build -debug -on-error=ask --var-file=variables.json nginx.json
 

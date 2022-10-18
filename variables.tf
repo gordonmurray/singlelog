@@ -20,6 +20,6 @@ variable "subnet_id" {
 }
 
 variable "my_ip_address" {
-  type = string
+  type        = string
   description = "Your own IP address to enable SSH access"
 }

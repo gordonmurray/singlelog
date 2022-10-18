@@ -17,7 +17,7 @@ terraform {
 provider "aws" {
   region                   = var.aws_region
   shared_credentials_files = ["~/.aws/credentials"]
-  profile                  = "terraform-staging"
+  profile                  = "singlelog"
 
   default_tags {
     tags = {
