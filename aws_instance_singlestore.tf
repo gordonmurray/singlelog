@@ -20,7 +20,8 @@ resource "aws_instance" "singlestore" {
   root_block_device {
     delete_on_termination = true
     encrypted             = true
-    volume_size           = "10"
+    volume_size           = "100"
+    volume_type           = "gp3"
   }
 
   tags = {
