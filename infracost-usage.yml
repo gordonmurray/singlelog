@@ -1,0 +1,9 @@
+version: 0.1
+resource_usage:
+  aws_s3_bucket.logs:
+    standard: # Usages of S3 Standard:
+      storage_gb: 1000 # Total storage in GB.
+      monthly_tier_1_requests: 100000 # Monthly PUT, COPY, POST, LIST requests (Tier 1).
+      monthly_tier_2_requests: 100000 # Monthly GET, SELECT, and all other requests (Tier 2).
+      monthly_select_data_scanned_gb: 10000 # Monthly data scanned by S3 Select in GB.
+      monthly_select_data_returned_gb: 10000 # Monthly data returned by S3 Select in GB.

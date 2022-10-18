@@ -13,6 +13,10 @@ SingleLog is a combination of vector.dev, AWS S3 and SingleStore for consuming, 
 
 [Infracost](https://www.infracost.io/) is used to estimate the costs of this project.
 
+Assumes 1 TB of data stored in s3, standard tier with a lot of requests.
+
+> infracost breakdown --path . --show-skipped  --usage-file infracost-usage.yml
+
 ```
 Project: gordonmurray/singlelog
 
@@ -28,23 +32,32 @@ Project: gordonmurray/singlelog
  └─ root_block_device                                                                                          
     └─ Storage (general purpose SSD, gp2)                             10  GB                             $1.10 
                                                                                                                
+ aws_kms_key.s3                                                                                                
+ ├─ Customer master key                                                1  months                         $1.00 
+ ├─ Requests                                           Monthly cost depends on usage: $0.03 per 10k requests   
+ ├─ ECC GenerateDataKeyPair requests                   Monthly cost depends on usage: $0.10 per 10k requests   
+ └─ RSA GenerateDataKeyPair requests                   Monthly cost depends on usage: $0.10 per 10k requests   
+                                                                                                               
  aws_s3_bucket.logs                                                                                            
  └─ Standard                                                                                                   
-    ├─ Storage                                         Monthly cost depends on usage: $0.023 per GB            
-    ├─ PUT, COPY, POST, LIST requests                  Monthly cost depends on usage: $0.005 per 1k requests   
-    ├─ GET, SELECT, and all other requests             Monthly cost depends on usage: $0.0004 per 1k requests  
-    ├─ Select data scanned                             Monthly cost depends on usage: $0.002 per GB            
-    └─ Select data returned                            Monthly cost depends on usage: $0.0007 per GB           
+    ├─ Storage                                                     1,000  GB                            $23.00 
+    ├─ PUT, COPY, POST, LIST requests                                100  1k requests                    $0.50 
+    ├─ GET, SELECT, and all other requests                           100  1k requests                    $0.04 
+    ├─ Select data scanned                                        10,000  GB                            $20.00 
+    └─ Select data returned                                       10,000  GB                             $7.00 
                                                                                                                
- OVERALL TOTAL                                                                                         $142.07 
+ OVERALL TOTAL                                                                                         $193.61 
 ──────────────────────────────────
-17 cloud resources were detected:
-∙ 3 were estimated, all of which include usage-based costs, see https://infracost.io/usage-file
+20 cloud resources were detected:
+∙ 4 were estimated, 3 of which include usage-based costs, see https://infracost.io/usage-file
 ∙ 14 were free:
   ∙ 10 x aws_security_group_rule
   ∙ 2 x aws_security_group
   ∙ 1 x aws_key_pair
   ∙ 1 x aws_s3_bucket_acl
+∙ 2 are not supported yet, see https://infracost.io/requested-resources:
+  ∙ 1 x aws_s3_bucket_server_side_encryption_configuration
+  ∙ 1 x aws_s3_bucket_versioning
   ```
 
 
