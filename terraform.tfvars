@@ -1,0 +1,5 @@
+my_ip_address = "35.174.71.212"
+aws_region = "us-east-1"
+aws_account_id = "464746349752"
+subnet_id = "subnet-04edf0972d10405ac"
+vpc_id = "vpc-035f00c3a6b353774"

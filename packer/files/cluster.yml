@@ -1,0 +1,13 @@
+license: xxxxxxxxxxxxxxxxxxxxxxxxxxx
+high_availability: false
+root_password: password
+hosts:
+  - hostname: xxx.xxx.xxx.xxx
+    nodes:
+      - role: Master
+        config:
+          port: 3306
+      - role: Leaf
+        config:
+          port: 3307
+    localhost: true

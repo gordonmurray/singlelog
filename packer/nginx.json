@@ -1,0 +1,44 @@
+{
+    "variables": {
+        "base_ami_id": "ami-0f69dd1d0d03ad669",
+        "region": "us-east-1",
+        "instance_type": "t4g.micro",
+        "vpc_id": "vpc-035f00c3a6b353774",
+        "subnet_id": "subnet-04edf0972d10405ac",
+        "profile": "terraform-staging"
+    },
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "profile": "{{user `profile`}}",
+            "region": "{{user `region`}}",
+            "instance_type": "{{user `instance_type`}}",
+            "source_ami": "{{user `base_ami_id`}}",
+            "ami_name": "nginx",
+            "ami_description": "nginx",
+            "ssh_username": "ubuntu",
+            "vpc_id": "{{user `vpc_id`}}",
+            "subnet_id": "{{user `subnet_id`}}",
+            "force_deregister": "true",
+            "force_delete_snapshot": "true",
+            "tags": {
+                "Name": "nginx"
+            }
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": [
+                "sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y && sudo apt-get autoremove -y && sudo apt-get autoclean -y",
+                "sudo apt-get install nginx-core certbot -y",
+                "curl --proto '=https' --tlsv1.2 -sSf https://sh.vector.dev | bash -s -- -y"
+            ]
+        },
+        {
+            "type": "file",
+            "source": "./files/vector.toml",
+            "destination": "/home/ubuntu/vector.toml"
+        }
+    ]
+}
