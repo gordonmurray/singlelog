@@ -16,27 +16,27 @@ SingleLog is a combination of vector.dev, AWS S3 and SingleStore for consuming, 
 ```
 Project: gordonmurray/singlelog
 
- Name                                                       Monthly Qty  Unit                    Monthly Cost 
-                                                                                                              
- aws_instance.nginx                                                                                           
- ├─ Instance usage (Linux/UNIX, on-demand, t3.micro)                730  hours                          $8.32 
- └─ root_block_device                                                                                         
-    └─ Storage (general purpose SSD, gp2)                            10  GB                             $1.10 
-                                                                                                              
- aws_instance.singlestore                                                                                     
- ├─ Instance usage (Linux/UNIX, on-demand, t3.micro)                730  hours                          $8.32 
- └─ root_block_device                                                                                         
-    └─ Storage (general purpose SSD, gp2)                            10  GB                             $1.10 
-                                                                                                              
- aws_s3_bucket.logs                                                                                           
- └─ Standard                                                                                                  
-    ├─ Storage                                        Monthly cost depends on usage: $0.023 per GB            
-    ├─ PUT, COPY, POST, LIST requests                 Monthly cost depends on usage: $0.005 per 1k requests   
-    ├─ GET, SELECT, and all other requests            Monthly cost depends on usage: $0.0004 per 1k requests  
-    ├─ Select data scanned                            Monthly cost depends on usage: $0.002 per GB            
-    └─ Select data returned                           Monthly cost depends on usage: $0.0007 per GB           
-                                                                                                              
- OVERALL TOTAL                                                                                         $18.84 
+ Name                                                        Monthly Qty  Unit                    Monthly Cost 
+                                                                                                               
+ aws_instance.nginx                                                                                            
+ ├─ Instance usage (Linux/UNIX, on-demand, t4g.micro)                730  hours                          $6.72 
+ └─ root_block_device                                                                                          
+    └─ Storage (general purpose SSD, gp2)                             10  GB                             $1.10 
+                                                                                                               
+ aws_instance.singlestore                                                                                      
+ ├─ Instance usage (Linux/UNIX, on-demand, t3.xlarge)                730  hours                        $133.15 
+ └─ root_block_device                                                                                          
+    └─ Storage (general purpose SSD, gp2)                             10  GB                             $1.10 
+                                                                                                               
+ aws_s3_bucket.logs                                                                                            
+ └─ Standard                                                                                                   
+    ├─ Storage                                         Monthly cost depends on usage: $0.023 per GB            
+    ├─ PUT, COPY, POST, LIST requests                  Monthly cost depends on usage: $0.005 per 1k requests   
+    ├─ GET, SELECT, and all other requests             Monthly cost depends on usage: $0.0004 per 1k requests  
+    ├─ Select data scanned                             Monthly cost depends on usage: $0.002 per GB            
+    └─ Select data returned                            Monthly cost depends on usage: $0.0007 per GB           
+                                                                                                               
+ OVERALL TOTAL                                                                                         $142.07 
 ──────────────────────────────────
 17 cloud resources were detected:
 ∙ 3 were estimated, all of which include usage-based costs, see https://infracost.io/usage-file

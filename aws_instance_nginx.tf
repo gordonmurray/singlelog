@@ -11,7 +11,7 @@ data "aws_ami" "nginx" {
 
 resource "aws_instance" "nginx" {
   ami                     = data.aws_ami.nginx.id
-  instance_type           = "t3.micro"
+  instance_type           = "t4g.micro"
   key_name                = aws_key_pair.key.key_name
   subnet_id               = var.subnet_id
   vpc_security_group_ids  = [aws_security_group.nginx.id]

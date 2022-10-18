@@ -11,7 +11,7 @@ data "aws_ami" "singlestore" {
 
 resource "aws_instance" "singlestore" {
   ami                     = data.aws_ami.singlestore.id
-  instance_type           = "t3.micro"
+  instance_type           = "t3.xlarge"
   key_name                = aws_key_pair.key.key_name
   subnet_id               = var.subnet_id
   vpc_security_group_ids  = [aws_security_group.singlestore.id]
