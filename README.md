@@ -48,11 +48,15 @@ Project: gordonmurray/singlelog
                                                                                                                
  OVERALL TOTAL                                                                                         $201.31 
 ──────────────────────────────────
-20 cloud resources were detected:
+24 cloud resources were detected:
 ∙ 4 were estimated, 3 of which include usage-based costs, see https://infracost.io/usage-file
-∙ 14 were free:
+∙ 18 were free:
   ∙ 10 x aws_security_group_rule
   ∙ 2 x aws_security_group
+  ∙ 1 x aws_iam_instance_profile
+  ∙ 1 x aws_iam_policy
+  ∙ 1 x aws_iam_policy_attachment
+  ∙ 1 x aws_iam_role
   ∙ 1 x aws_key_pair
   ∙ 1 x aws_s3_bucket_acl
 ∙ 2 are not supported yet, see https://infracost.io/requested-resources:
