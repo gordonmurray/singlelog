@@ -24,7 +24,10 @@ resource "aws_instance" "nginx" {
     volume_size           = "10"
   }
 
-  user_data = "sudo service vector start"
+  user_data = <<EOF
+#!/bin/bash
+sudo service vector restart
+EOF
 
   tags = {
     Name = "nginx"

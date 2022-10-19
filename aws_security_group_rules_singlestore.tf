@@ -15,7 +15,7 @@ resource "aws_security_group_rule" "singlestore_http" {
   protocol          = "tcp"
   cidr_blocks       = ["${var.my_ip_address}/32"]
   security_group_id = aws_security_group.singlestore.id
-  description       = "HTTPS"
+  description       = "HTTP"
 }
 
 resource "aws_security_group_rule" "singlestore_ssh" {
@@ -35,7 +35,7 @@ resource "aws_security_group_rule" "singlestore_sql" {
   protocol          = "tcp"
   cidr_blocks       = ["${var.my_ip_address}/32"]
   security_group_id = aws_security_group.singlestore.id
-  description       = "SSH access"
+  description       = "SQL access"
 }
 
 resource "aws_security_group_rule" "singlestore_app" {

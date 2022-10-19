@@ -24,6 +24,21 @@ resource "aws_instance" "singlestore" {
     volume_type           = "gp3"
   }
 
+  user_data = <<EOF
+#!/bin/bash
+# Some settings needed by Singlestore
+sudo sysctl -w vm.min_free_kbytes=161950
+sudo sysctl -w vm.max_map_count=262144
+sudo sysctl -w net.core.rmem_max=8388608
+sudo sysctl -w net.core.wmem_max=8388608
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+# Start the UI on port 8080
+sudo memsql-studio
+EOF
+
   tags = {
     Name = "singlestore"
   }
