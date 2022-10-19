@@ -64,3 +64,7 @@ Project: gordonmurray/singlelog
 ### Security
 
 [tfsec](https://aquasecurity.github.io/tfsec) is used to secure this Terraform project
+
+### Usage
+
+Set your current IP address in the `my_ip_address` key in terraform.tfvars - this will allow you to SSH in to the instances if you need to.

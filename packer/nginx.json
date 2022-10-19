@@ -20,17 +20,20 @@
     ],
     "provisioners": [
         {
-            "type": "shell",
-            "inline": [
-                "sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y && sudo apt-get autoremove -y && sudo apt-get autoclean -y",
-                "sudo apt-get install nginx-core certbot -y",
-                "curl --proto '=https' --tlsv1.2 -sSf https://sh.vector.dev | bash -s -- -y"
-            ]
-        },
-        {
             "type": "file",
             "source": "./files/vector.toml",
             "destination": "/home/ubuntu/vector.toml"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get autoremove -y && sudo apt-get autoclean -y",
+                "curl -1sLf 'https://repositories.timber.io/public/vector/cfg/setup/bash.deb.sh' | sudo -E bash",
+                "sudo apt-get install nginx-core -y",
+                "sudo apt-get install vector -y",
+                "sudo mv /home/ubuntu/vector.toml /etc/vector/",
+                "sudo chown vector:vector /var/lib/vector/"
+            ]
         }
     ]
 }
