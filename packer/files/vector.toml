@@ -5,18 +5,19 @@ enabled = true
 
 [sources.nginx]
 type = "file"
-include = [ "/var/log/nginx.log" ]
+include = [ "/var/log/nginx/access.log" ]
 read_from = "beginning"
 
 [sinks.s3]
 type = "aws_s3"
 inputs = [ "nginx" ]
-bucket = "singlelog-logs"
+bucket = "singlelogs-logs"
 key_prefix = "nginx/"
 compression = "none"
-region = "us-east-1"
-auth.access_key_id = ""
-auth.secret_access_key = ""
+region = "eu-west-1"
+batch.timeout_secs = 60 # default is 300 seconds
 
 [sinks.s3.encoding]
   codec = "text"
+
+
