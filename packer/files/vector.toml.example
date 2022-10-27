@@ -1,0 +1,31 @@
+data_dir = "/var/lib/vector"
+
+[api]
+enabled = true
+
+[sources.nginx]
+type = "file"
+include = [ "/var/log/nginx/access.log" ]
+
+[transforms.parsed_nginx]
+  type = "remap"
+  inputs = ["nginx"]
+  source = '''
+  parsed, err = parse_nginx_log(.message, "combined")
+  if is_null(err) {
+    . = merge(., parsed)
+  }
+  #parsed = append(parsed, ["gordon"])
+  '''
+
+[sinks.s3]
+type = "aws_s3"
+inputs = [ "parsed_nginx" ]
+bucket = "singlelogs-logs"
+key_prefix = "nginx/"
+compression = "none"
+region = "eu-west-1"
+batch.timeout_secs = 60 # default is 300 seconds
+
+[sinks.s3.encoding]
+  codec = "json"
