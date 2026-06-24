@@ -23,3 +23,8 @@ variable "my_ip_address" {
   type        = string
   description = "Your own IP address to enable SSH access"
 }
+
+variable "ssh_public_key_path" {
+  type        = string
+  description = "Path to the SSH public key to install on the instances, e.g. ~/.ssh/id_rsa.pub"
+}
