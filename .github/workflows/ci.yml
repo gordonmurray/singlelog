@@ -13,7 +13,7 @@ jobs:
     name: terraform
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: "1.10.5"
@@ -28,7 +28,7 @@ jobs:
     name: tflint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: terraform-linters/setup-tflint@v4
       - name: init
         run: tflint --init --config="$PWD/.tflint.hcl"
@@ -39,7 +39,7 @@ jobs:
     name: trivy-config
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Scan Terraform with Trivy
         uses: aquasecurity/trivy-action@v0.36.0
         with:
