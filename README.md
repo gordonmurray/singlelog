@@ -97,7 +97,3 @@ make audit-clickhouse HOST=<clickhouse_ip> KEY=~/.ssh/id_rsa
 
 `make validate` (Terraform), `make lint` (tflint), `make security` (Trivy). CI runs the
 same on every PR; the toolchain is pinned in a Docker image (`make shell`).
-
-## License
-
-MIT.
