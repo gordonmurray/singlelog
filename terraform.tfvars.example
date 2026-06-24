@@ -4,3 +4,8 @@ aws_account_id      = ""                   # account that owns the Packer-built 
 subnet_id           = "subnet-xxxx"
 vpc_id              = "vpc-xxxx"
 ssh_public_key_path = "~/.ssh/id_rsa.pub"  # public key installed on the instances
+
+# Tigris (object storage). Create an access key in the Tigris dashboard.
+tigris_access_key = ""
+tigris_secret_key = ""
+tigris_bucket_name = "singlelog-logs"      # must be globally unique
