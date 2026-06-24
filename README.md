@@ -78,6 +78,51 @@ GROUP BY client ORDER BY hits DESC LIMIT 20;
 
 More in [docs/clickhouse.md](docs/clickhouse.md) and `packer/files/clickhouse/queries.sql`.
 
+## Sample searches
+
+Real timings from a live run over **5,037** nginx log lines on a single `t4g.medium`.
+
+Interactive search from the hot MergeTree is a few **milliseconds**:
+
+```sql
+-- status breakdown — 2.8 ms
+SELECT status, count() AS n FROM logs GROUP BY status ORDER BY n DESC;
+┌─status─┬────n─┐
+│    404 │ 4281 │
+│    200 │  756 │
+└────────┴──────┘
+
+-- top requests — 3.0 ms
+SELECT request, count() AS hits FROM logs GROUP BY request ORDER BY hits DESC LIMIT 5;
+┌─request──────────────────┬─hits─┐
+│ GET / HTTP/1.1           │  756 │
+│ GET /login HTTP/1.1      │  254 │
+│ GET /about HTTP/1.1      │  253 │
+│ GET /admin HTTP/1.1      │  253 │
+│ GET /api/health HTTP/1.1 │  253 │
+└──────────────────────────┴──────┘
+
+-- text search — 3.2 ms
+SELECT count() FROM logs WHERE request LIKE '%/login%';   -- 254
+```
+
+Or query Tigris directly with **no ingest at all** — free egress keeps the scans cheap:
+
+```sql
+-- count straight from the gzipped logs in Tigris — 203 ms
+SELECT count() FROM s3(tigris,
+  url = 'https://t3.storage.dev/singlelog-logs/nginx/**/*.log.gz', format = 'JSONEachRow');
+-- 5037
+
+-- status breakdown over Tigris — 261 ms
+SELECT status, count() AS n FROM s3(tigris,
+  url = 'https://t3.storage.dev/singlelog-logs/nginx/**/*.log.gz', format = 'JSONEachRow')
+GROUP BY status ORDER BY n DESC;
+```
+
+So: ~3 ms from the hot window, or ~200 ms straight off object storage when you want the
+full history. Both on a box that costs about $29/mo.
+
 ## Cost
 
 Roughly **~$37/mo** of AWS (nginx + ClickHouse + Secrets Manager) plus Tigris storage,
