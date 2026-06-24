@@ -1,0 +1,5 @@
+<clickhouse>
+    <!-- Listen on all interfaces; the security group restricts who can reach
+         the HTTP (8123) and native (9000) ports. -->
+    <listen_host>0.0.0.0</listen_host>
+</clickhouse>
