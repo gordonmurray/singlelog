@@ -5,19 +5,33 @@ enabled = true
 
 [sources.nginx]
 type = "file"
-include = [ "/var/log/nginx/access.log" ]
+include = ["/var/log/nginx/access.log"]
 read_from = "beginning"
 
-[sinks.s3]
+# Parse the nginx combined log format into structured fields so they can be
+# queried directly in ClickHouse rather than as one opaque message string.
+[transforms.parsed_nginx]
+type = "remap"
+inputs = ["nginx"]
+source = '''
+parsed, err = parse_nginx_log(.message, "combined")
+if is_null(err) {
+  . = merge(., parsed)
+}
+'''
+
+# Logs go to Tigris, which is S3-compatible: a single global endpoint and
+# region "auto". Credentials come from the environment (AWS_ACCESS_KEY_ID /
+# AWS_SECRET_ACCESS_KEY), set at boot from the Tigris secret in Secrets Manager.
+[sinks.tigris]
 type = "aws_s3"
-inputs = [ "nginx" ]
-bucket = "singlelogs-logs"
+inputs = ["parsed_nginx"]
+bucket = "singlelog-logs"
+endpoint = "https://t3.storage.dev"
+region = "auto"
 key_prefix = "nginx/"
 compression = "none"
-region = "eu-west-1"
-batch.timeout_secs = 60 # default is 300 seconds
+batch.timeout_secs = 60
 
-[sinks.s3.encoding]
-  codec = "text"
-
-
+[sinks.tigris.encoding]
+codec = "json"
