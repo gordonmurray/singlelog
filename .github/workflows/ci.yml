@@ -24,6 +24,17 @@ jobs:
       - name: validate
         run: terraform validate
 
+  tflint:
+    name: tflint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: terraform-linters/setup-tflint@v4
+      - name: init
+        run: tflint --init --config="$PWD/.tflint.hcl"
+      - name: lint
+        run: tflint --config="$PWD/.tflint.hcl" -f compact
+
   trivy-config:
     name: trivy-config
     runs-on: ubuntu-latest
