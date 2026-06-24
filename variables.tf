@@ -46,3 +46,9 @@ variable "tigris_secret_name" {
   description = "Secrets Manager secret holding the Tigris credentials"
   default     = "singlelog/tigris"
 }
+
+variable "tigris_bucket_name" {
+  type        = string
+  description = "Tigris bucket for the logs (must be globally unique)"
+  default     = "singlelog-logs"
+}
