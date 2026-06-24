@@ -1,0 +1,5 @@
+region        = "eu-west-1"
+profile       = "your-aws-profile"
+instance_type = "t4g.micro"
+vpc_id        = "vpc-xxxx"
+subnet_id     = "subnet-xxxx"
