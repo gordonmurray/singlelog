@@ -24,9 +24,17 @@ resource "aws_instance" "nginx" {
     volume_size           = "10"
   }
 
+  # Pull the Tigris key from Secrets Manager and hand it to Vector's S3 sink.
   user_data = <<EOF
 #!/bin/bash
-sudo service vector restart
+set -e
+secret=$(aws secretsmanager get-secret-value --secret-id ${var.tigris_secret_name} --query SecretString --output text --region ${var.aws_region})
+cat >/etc/default/vector <<ENV
+AWS_ACCESS_KEY_ID=$(echo "$secret" | jq -r .access_key_id)
+AWS_SECRET_ACCESS_KEY=$(echo "$secret" | jq -r .secret_access_key)
+AWS_REGION=auto
+ENV
+systemctl restart vector
 EOF
 
   tags = {
