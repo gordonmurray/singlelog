@@ -33,6 +33,7 @@ cat >/etc/default/vector <<ENV
 AWS_ACCESS_KEY_ID=$(echo "$secret" | jq -r .access_key_id)
 AWS_SECRET_ACCESS_KEY=$(echo "$secret" | jq -r .secret_access_key)
 AWS_REGION=auto
+VECTOR_CONFIG=/etc/vector/vector.toml
 ENV
 systemctl restart vector
 EOF
