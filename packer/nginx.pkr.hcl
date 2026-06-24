@@ -77,7 +77,9 @@ build {
   provisioner "shell" {
     inline = [
       "sudo apt-get update && sudo apt-get upgrade -y",
-      "sudo apt-get install -y nginx-core jq awscli",
+      "sudo apt-get install -y nginx-core jq unzip",
+      "curl -fsSL https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip -o /tmp/awscliv2.zip",
+      "cd /tmp && unzip -q awscliv2.zip && sudo ./aws/install && rm -rf /tmp/aws /tmp/awscliv2.zip",
       "curl -1sLf https://setup.vector.dev | sudo -E bash",
       "sudo apt-get install -y vector",
       "sudo mv /home/ubuntu/vector.toml /etc/vector/vector.toml",
