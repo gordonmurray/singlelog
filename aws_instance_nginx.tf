@@ -42,5 +42,5 @@ EOF
 
 resource "aws_iam_instance_profile" "singlelog_profile" {
   name = "singlelog_profile"
-  role = aws_iam_role.singlestore_s3_role.name
+  role = aws_iam_role.instance.name
 }
