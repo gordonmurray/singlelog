@@ -5,27 +5,28 @@ enabled = true
 
 [sources.nginx]
 type = "file"
-include = [ "/var/log/nginx/access.log" ]
+include = ["/var/log/nginx/access.log"]
+read_from = "beginning"
 
 [transforms.parsed_nginx]
-  type = "remap"
-  inputs = ["nginx"]
-  source = '''
-  parsed, err = parse_nginx_log(.message, "combined")
-  if is_null(err) {
-    . = merge(., parsed)
-  }
-  #parsed = append(parsed, ["gordon"])
-  '''
+type = "remap"
+inputs = ["nginx"]
+source = '''
+parsed, err = parse_nginx_log(.message, "combined")
+if is_null(err) {
+  . = merge(., parsed)
+}
+'''
 
-[sinks.s3]
+[sinks.tigris]
 type = "aws_s3"
-inputs = [ "parsed_nginx" ]
-bucket = "singlelogs-logs"
+inputs = ["parsed_nginx"]
+bucket = "your-tigris-bucket"
+endpoint = "https://t3.storage.dev"
+region = "auto"
 key_prefix = "nginx/"
 compression = "none"
-region = "eu-west-1"
-batch.timeout_secs = 60 # default is 300 seconds
+batch.timeout_secs = 60
 
-[sinks.s3.encoding]
-  codec = "json"
+[sinks.tigris.encoding]
+codec = "json"
