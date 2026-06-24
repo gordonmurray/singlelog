@@ -72,6 +72,16 @@ build {
     destination = "/home/ubuntu/queries.sql"
   }
 
+  provisioner "file" {
+    source      = "./files/clickhouse/schema.sql"
+    destination = "/home/ubuntu/schema.sql"
+  }
+
+  provisioner "file" {
+    source      = "./files/clickhouse/refreshable.xml"
+    destination = "/home/ubuntu/refreshable.xml"
+  }
+
   provisioner "shell" {
     inline = [
       "export DEBIAN_FRONTEND=noninteractive",
@@ -82,6 +92,7 @@ build {
       "sudo apt-get update",
       "sudo DEBIAN_FRONTEND=noninteractive apt-get install -y clickhouse-server clickhouse-client",
       "sudo mv /home/ubuntu/network.xml /etc/clickhouse-server/config.d/network.xml",
+      "sudo mv /home/ubuntu/refreshable.xml /etc/clickhouse-server/config.d/refreshable.xml",
       "sudo systemctl enable clickhouse-server",
     ]
   }

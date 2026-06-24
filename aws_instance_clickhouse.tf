@@ -43,6 +43,9 @@ XML
 chown clickhouse:clickhouse /etc/clickhouse-server/config.d/tigris.xml
 chmod 600 /etc/clickhouse-server/config.d/tigris.xml
 systemctl restart clickhouse-server
+# Wait for ClickHouse, then create the hot MergeTree table + refreshable view.
+for i in $(seq 1 30); do clickhouse-client -q 'SELECT 1' >/dev/null 2>&1 && break || sleep 2; done
+sed "s|@BUCKET@|${var.tigris_bucket_name}|g" /home/ubuntu/schema.sql | clickhouse-client -mn
 EOF
 
   metadata_options {
