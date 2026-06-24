@@ -1,0 +1,14 @@
+# Accepted Trivy findings, with reasons.
+
+# Instances need outbound access (apt, Tigris over HTTPS, AWS APIs). Restricting
+# egress by CIDR isn't practical for general internet egress.
+AWS-0104
+
+# The Tigris secret uses the AWS-managed Secrets Manager key. A customer-managed
+# key is overkill for this demo.
+AWS-0098
+
+# The toolchain image is a local/CI dev image, run as root by design.
+DS-0002
+# ...and it's not a long-running service, so no HEALTHCHECK.
+DS-0026
