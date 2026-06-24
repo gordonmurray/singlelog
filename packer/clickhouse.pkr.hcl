@@ -86,7 +86,9 @@ build {
     inline = [
       "export DEBIAN_FRONTEND=noninteractive",
       "sudo apt-get update && sudo apt-get upgrade -y",
-      "sudo apt-get install -y apt-transport-https ca-certificates curl gnupg jq awscli",
+      "sudo apt-get install -y apt-transport-https ca-certificates curl gnupg jq unzip",
+      "curl -fsSL https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip -o /tmp/awscliv2.zip",
+      "cd /tmp && unzip -q awscliv2.zip && sudo ./aws/install && rm -rf /tmp/aws /tmp/awscliv2.zip",
       "curl -fsSL https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key | sudo gpg --dearmor -o /usr/share/keyrings/clickhouse-keyring.gpg",
       "echo 'deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=arm64] https://packages.clickhouse.com/deb stable main' | sudo tee /etc/apt/sources.list.d/clickhouse.list",
       "sudo apt-get update",
