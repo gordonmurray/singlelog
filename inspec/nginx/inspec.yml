@@ -1,0 +1,6 @@
+name: singlelog-nginx
+title: singlelog nginx host
+maintainer: gordonmurray
+license: MIT
+summary: Checks that nginx and Vector are running on the log-source host
+version: 0.1.0
