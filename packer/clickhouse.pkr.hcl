@@ -67,6 +67,11 @@ build {
     destination = "/home/ubuntu/network.xml"
   }
 
+  provisioner "file" {
+    source      = "./files/clickhouse/queries.sql"
+    destination = "/home/ubuntu/queries.sql"
+  }
+
   provisioner "shell" {
     inline = [
       "export DEBIAN_FRONTEND=noninteractive",
