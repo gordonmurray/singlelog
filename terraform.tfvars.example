@@ -1,0 +1,6 @@
+my_ip_address       = ""                   # your IP for SSH access, e.g. 1.2.3.4
+aws_region          = "eu-west-1"
+aws_account_id      = ""                   # account that owns the Packer-built AMIs
+subnet_id           = "subnet-xxxx"
+vpc_id              = "vpc-xxxx"
+ssh_public_key_path = "~/.ssh/id_rsa.pub"  # public key installed on the instances

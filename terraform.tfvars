@@ -1,5 +1,0 @@
-my_ip_address  = ""
-aws_region     = "eu-west-1"
-aws_account_id = ""
-subnet_id      = "subnet-xxxx"
-vpc_id         = "vpc-xxxx"
