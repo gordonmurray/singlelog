@@ -37,3 +37,11 @@ tools-build: ## Build the pinned toolchain image
 .PHONY: shell
 shell: tools-build ## Open a shell in the toolchain image
 	docker run --rm -it -v "$(CURDIR)":/work -w /work $(IMAGE) bash
+
+.PHONY: audit-nginx
+audit-nginx: ## CINC Auditor checks on the nginx host (HOST=<ip> KEY=<path>)
+	cinc-auditor exec inspec/nginx -t ssh://ubuntu@$(HOST) -i $(KEY) --chef-license accept-silent
+
+.PHONY: audit-clickhouse
+audit-clickhouse: ## CINC Auditor checks on the ClickHouse host (HOST=<ip> KEY=<path>)
+	cinc-auditor exec inspec/clickhouse -t ssh://ubuntu@$(HOST) -i $(KEY) --chef-license accept-silent

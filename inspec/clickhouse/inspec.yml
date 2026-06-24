@@ -1,0 +1,6 @@
+name: singlelog-clickhouse
+title: singlelog ClickHouse host
+maintainer: gordonmurray
+license: MIT
+summary: Checks that ClickHouse is running and listening on the search host
+version: 0.1.0
