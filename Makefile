@@ -38,10 +38,19 @@ tools-build: ## Build the pinned toolchain image
 shell: tools-build ## Open a shell in the toolchain image
 	docker run --rm -it -v "$(CURDIR)":/work -w /work $(IMAGE) bash
 
+CINC_IMAGE := cincproject/auditor:7
+
+# Runs CINC Auditor from its own image (only Docker needed, no local install),
+# mounting the profiles read-only and your private key.
+define cinc_audit
+	docker run --rm -v "$(CURDIR)/inspec":/inspec:ro -v "$(abspath $(KEY))":/key:ro $(CINC_IMAGE) \
+		exec /inspec/$(1) -t ssh://ubuntu@$(HOST) -i /key --no-create-lockfile --chef-license accept-silent
+endef
+
 .PHONY: audit-nginx
-audit-nginx: ## CINC Auditor checks on the nginx host (HOST=<ip> KEY=<path>)
-	cinc-auditor exec inspec/nginx -t ssh://ubuntu@$(HOST) -i $(KEY) --chef-license accept-silent
+audit-nginx: ## CINC Auditor checks on the nginx host (HOST=<ip> KEY=<private key>)
+	$(call cinc_audit,nginx)
 
 .PHONY: audit-clickhouse
-audit-clickhouse: ## CINC Auditor checks on the ClickHouse host (HOST=<ip> KEY=<path>)
-	cinc-auditor exec inspec/clickhouse -t ssh://ubuntu@$(HOST) -i $(KEY) --chef-license accept-silent
+audit-clickhouse: ## CINC Auditor checks on the ClickHouse host (HOST=<ip> KEY=<private key>)
+	$(call cinc_audit,clickhouse)
