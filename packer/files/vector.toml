@@ -29,9 +29,13 @@ inputs = ["parsed_nginx"]
 bucket = "singlelog-logs"
 endpoint = "https://t3.storage.dev"
 region = "auto"
-key_prefix = "nginx/"
-compression = "none"
+# Hive-style time partitioning so queries and lifecycle rules can prune by time.
+key_prefix = "nginx/year=%Y/month=%m/day=%d/hour=%H/"
+compression = "gzip"
 batch.timeout_secs = 60
 
 [sinks.tigris.encoding]
 codec = "json"
+
+[sinks.tigris.framing]
+method = "newline_delimited"
