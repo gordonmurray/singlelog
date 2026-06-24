@@ -28,3 +28,21 @@ variable "ssh_public_key_path" {
   type        = string
   description = "Path to the SSH public key to install on the instances, e.g. ~/.ssh/id_rsa.pub"
 }
+
+variable "tigris_access_key" {
+  type        = string
+  description = "Tigris access key, used to create the bucket and read by the instances"
+  sensitive   = true
+}
+
+variable "tigris_secret_key" {
+  type        = string
+  description = "Tigris secret key"
+  sensitive   = true
+}
+
+variable "tigris_secret_name" {
+  type        = string
+  description = "Secrets Manager secret holding the Tigris credentials"
+  default     = "singlelog/tigris"
+}
