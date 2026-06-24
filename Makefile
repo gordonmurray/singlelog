@@ -1,0 +1,39 @@
+IMAGE := singlelog-tools
+
+.DEFAULT_GOAL := help
+
+.PHONY: help
+help: ## Show this help
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
+		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2}'
+
+.PHONY: fmt
+fmt: ## Format the Terraform
+	terraform fmt -recursive
+
+.PHONY: validate
+validate: ## Init (no backend) and validate the Terraform
+	terraform init -backend=false
+	terraform fmt -check -recursive
+	terraform validate
+
+.PHONY: lint
+lint: ## Run tflint
+	tflint --init --config=$(CURDIR)/.tflint.hcl
+	tflint --config=$(CURDIR)/.tflint.hcl
+
+.PHONY: security
+security: ## Scan the Terraform with Trivy
+	trivy config .
+
+.PHONY: cost
+cost: ## Estimate monthly cost with Infracost
+	infracost breakdown --path . --show-skipped --usage-file infracost-usage.yml
+
+.PHONY: tools-build
+tools-build: ## Build the pinned toolchain image
+	docker build -t $(IMAGE) .
+
+.PHONY: shell
+shell: tools-build ## Open a shell in the toolchain image
+	docker run --rm -it -v "$(CURDIR)":/work -w /work $(IMAGE) bash
