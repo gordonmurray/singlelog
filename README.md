@@ -27,6 +27,45 @@ on top.
   with `s3()` for ad-hoc and historical queries, and keeps the last day in a refreshable
   MergeTree table for sub-second interactive search.
 
+## Architecture
+
+```
+                            ┌───────────────────────────────┐
+                            │      AWS Secrets Manager       │
+                            │       Tigris access key        │
+                            └───────────────┬───────────────┘
+                              creds @boot    │    creds @boot
+                          ┌──────────────────┴──────────────────┐
+                          ▼                                      ▼
+        ┌──────────────────────────────┐        ┌──────────────────────────────┐
+        │    nginx  EC2 · t4g.micro     │        │  ClickHouse EC2 · t4g.medium  │
+        │                               │        │                               │
+        │   demo app                    │        │   ┌───────────────────────┐   │
+        │      │                        │        │   │ s3() federation       │   │
+        │      ▼  access.log            │        │   │  cold / ad-hoc ~200ms │   │
+        │   ┌─────────────────────┐     │        │   ├───────────────────────┤   │
+        │   │ Vector              │     │        │   │ MergeTree hot window  │   │
+        │   │  tail → s3 sink     │     │        │   │  refreshable MV ~3ms  │   │
+        │   └──────────┬──────────┘     │        │   └───────────┬───────────┘   │
+        └──────────────│────────────────┘        └──────────────│────────────────┘
+                       │                                         │
+          write · gzip NDJSON                         read · free egress
+          S3 API · region=auto                        s3() over Tigris
+                       │                                         │
+                       ▼                                         │
+        ┌──────────────────────────────────────────────────────┴────────────────┐
+        │   Tigris  ·  S3-compatible object store  ·  t3.storage.dev              │
+        │   bucket: singlelog-logs                                               │
+        │                                                                        │
+        │   nginx/ year=2026/ month=06/ day=25/ hour=14/  *.log.gz               │
+        │   (gzip NDJSON, Hive-partitioned — the queryable log lake)             │
+        └─────────────────────────────────────────────────────────────────────────┘
+```
+
+Secrets Manager mints the Tigris key once; both instance roles read just that secret at
+boot, so no keys live in the AMIs, git, or Terraform state. The query timings are from a
+real end-to-end run.
+
 ## Prerequisites
 
 - An AWS account, plus Terraform and Packer.
