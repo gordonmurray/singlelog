@@ -32,4 +32,8 @@ override.tf.json
 
 packer/variables.json
 
+# Throwaway key generated for terraform test, never a real one
+tests/fixtures/id_rsa
+tests/fixtures/id_rsa.pub
+
 .infracost/

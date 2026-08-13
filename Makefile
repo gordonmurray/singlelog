@@ -13,9 +13,17 @@ fmt: ## Format the Terraform
 
 .PHONY: validate
 validate: ## Init (no backend) and validate the Terraform
-	terraform init -backend=false
+	terraform init -backend=false -lockfile=readonly
 	terraform fmt -check -recursive
 	terraform validate
+
+# The providers are mocked, so this needs no AWS credentials. The key is only
+# there because terraform test evaluates file(), unlike terraform validate.
+.PHONY: test
+test: ## Run the plan-level Terraform tests
+	@mkdir -p tests/fixtures
+	@test -f tests/fixtures/id_rsa.pub || ssh-keygen -t ed25519 -N "" -C ci -f tests/fixtures/id_rsa
+	terraform test
 
 .PHONY: lint
 lint: ## Run tflint
