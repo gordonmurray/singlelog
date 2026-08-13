@@ -30,6 +30,14 @@ lint: ## Run tflint
 	tflint --init --config=$(CURDIR)/.tflint.hcl
 	tflint --config=$(CURDIR)/.tflint.hcl
 
+.PHONY: packer
+packer: ## Init and validate the Packer templates (no AWS credentials needed)
+	@cd packer && for template in *.pkr.hcl; do \
+		packer fmt -check "$$template" && \
+		packer init "$$template" && \
+		packer validate "$$template" || exit 1; \
+	done
+
 .PHONY: security
 security: ## Scan the Terraform with Trivy
 	trivy config .

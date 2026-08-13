@@ -47,6 +47,27 @@ jobs:
       - name: test
         run: terraform test
 
+  packer:
+    name: packer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: hashicorp/setup-packer@v3
+        with:
+          version: "1.11.2"
+      - name: fmt
+        run: packer fmt -check -recursive .
+        working-directory: packer
+      # No credentials needed: validate does not evaluate the data sources, so
+      # it never calls AWS.
+      - name: init and validate
+        run: |
+          for template in *.pkr.hcl; do
+            packer init "$template"
+            packer validate "$template"
+          done
+        working-directory: packer
+
   tflint:
     name: tflint
     runs-on: ubuntu-latest
