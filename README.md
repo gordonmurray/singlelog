@@ -179,8 +179,9 @@ make audit-clickhouse HOST=<clickhouse_ip> KEY=~/.ssh/id_rsa
 
 ## Development
 
-`make validate` (Terraform), `make lint` (tflint), `make security` (Trivy), `make test`.
-CI runs the same on every PR; the toolchain is pinned in a Docker image (`make shell`).
+`make validate` (Terraform), `make test` (plan-level tests), `make lint` (tflint),
+`make packer` (Packer templates), `make security` (Trivy). CI runs the same on every PR;
+the toolchain is pinned in a Docker image (`make shell`).
 
 `make test` runs the checks in `tests/` with both providers mocked, so it plans the whole
 stack — instance hardening, the security group rules, the bucket ACL, the instance role —
