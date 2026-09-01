@@ -1,5 +1,5 @@
 # Pinned toolchain so local runs and CI match.
-FROM ubuntu:25.10
+FROM ubuntu:26.04
 
 ARG TERRAFORM_VERSION=1.10.5
 ARG PACKER_VERSION=1.11.2
