@@ -80,6 +80,9 @@ jobs:
       - uses: terraform-linters/setup-tflint@v6
       - name: init
         run: tflint --init --config="$PWD/.tflint.hcl"
+        env:
+          # Plugin download hits the GitHub API; unauthenticated it gets rate limited.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: lint
         run: tflint --config="$PWD/.tflint.hcl" -f compact
 
